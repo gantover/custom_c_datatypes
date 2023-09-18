@@ -134,6 +134,40 @@ vector* vector_map(vector* self, map_func f) {
 	return self;
 }
 
+
+void swap(vector* self, int i, int j) {
+	void* tmp = self->items[i];
+	self->items[i] = self->items[j];
+	self->items[j] = tmp;
+}
+
+int partition(vector *self, int start, int end, comp_func f) {
+	int i = start - 1;
+	void* x = self->items[end];
+	
+	for (int j = start; j < end; j++) {
+		if (f(self->items[j], x)) {
+			i = i + 1;
+			swap(self,i,j);
+		}
+	}
+	swap(self, i+1, end);
+	return i+1;
+}
+
+
+void quicksort(vector* self, int start, int end, comp_func f) {
+	if (start < end) {
+		int part = partition(self, start, end, f);
+		quicksort(self, start, part-1, f);
+		quicksort(self, part+1, end, f);
+	}
+}
+
+void quicksort_init(vector* self, comp_func f) {
+	quicksort(self, 0, self->total-1, f);
+}
+
 vector new_vector(unsigned int default_capacity, int type) {
 	vector self;
 	if (type == VEC_DYNAMIC) {
@@ -155,6 +189,7 @@ vector new_vector(unsigned int default_capacity, int type) {
 	self.push = vector_push;
 	self.get = vector_get;
 	self.map = vector_map;
+	self.quicksort = quicksort_init;
 	return self;
 } 
 

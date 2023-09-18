@@ -9,6 +9,7 @@
 
 typedef int (*filter_func) (void*);
 typedef void (*map_func) (void*);
+typedef int (*comp_func) (void*, void*);
 
 typedef struct sVector vector;
 
@@ -21,6 +22,7 @@ struct sVector {
 	void* (*get) (vector*, int);
 	void (*rm) (vector*, int);
 	void (*del) (vector*);
+	void (*quicksort) (vector*, comp_func);
 	vector* (*filter) (vector*, filter_func);
 	vector* (*map) (vector*, map_func);
 };

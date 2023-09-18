@@ -47,14 +47,37 @@ double test_vec(void) {
 	return duration;
 }
 
+int comp_le(void* i, void* j) {
+	int int_i = *(int*)i;
+	int int_j = *(int*)j;
+	if (int_i <= int_j) {
+		return true;
+	}
+	return false;
+}
+
 int main(int argc, char *argv[])
 {
-	double duration = 0;
-	for (int i = 0; i < 1000; i++) {
-		duration += test_vec();
+	// double duration = 0;
+	// for (int i = 0; i < 1000; i++) {
+	// 	duration += test_vec();
+	// }
+	// duration/=1000;
+	// printf("duration : %f\n", duration);
+	
+	vector v = new_vector(8, VEC_DYNAMIC);
+
+	for (int i = 0; i < 8; i++) {
+		int* num = malloc(sizeof(int));
+		// *num = 8 - i;
+		*num = rand() % 50;
+		v.push(&v, num);
 	}
-	duration/=1000;
-	printf("duration : %f\n", duration);
+	v.map(&v, print_map);
+	printf("quicksorting\n");
+	v.quicksort(&v, comp_le);
+	v.map(&v, print_map);
+
 
 	return EXIT_SUCCESS;
 }
